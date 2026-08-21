@@ -205,8 +205,8 @@ select {
 }
 
 .fret-wire {
-  stroke: var(--border-color-strong);
-  stroke-width: 2;
+  stroke: #2c2d31;
+  stroke-width: 1;
 }
 
 .nut {
@@ -214,8 +214,8 @@ select {
 }
 
 .string-line {
-  stroke: #4a4b50;
-  stroke-width: 1.5;
+  stroke: #63646b;
+  stroke-width: 1.75;
 }
 
 .fret-dot {
@@ -332,11 +332,11 @@ select {
   }
 
   .fret-wire {
-    stroke: #333;
+    stroke: #bbb;
   }
 
   .string-line {
-    stroke: #555;
+    stroke: #444;
   }
 
   .fret-dot {

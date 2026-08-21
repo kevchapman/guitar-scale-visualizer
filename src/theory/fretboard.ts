@@ -2,7 +2,7 @@ import type { FretCell, Mode, ScaleTone } from './types'
 import { mod12, OPEN_STRING_PCS } from './notes'
 import { buildScale } from './scale'
 
-export const MIN_FRET_COUNT = 15
+export const MIN_FRET_COUNT = 22
 
 /**
  * Full string x fret grid of in-scale notes. Cells that don't land on a

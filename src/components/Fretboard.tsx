@@ -18,7 +18,7 @@ const OPEN_COL_WIDTH = 60
 const NUT_WIDTH = 6
 const STRING_GAP = 46
 const TOP_PAD = 54
-const BOTTOM_PAD = 40
+const BOTTOM_PAD = 52
 const LEFT_PAD = 24
 const RIGHT_PAD = 28
 const SURFACE_PAD_Y = 24
@@ -26,7 +26,7 @@ const MARKER_R = 15
 const OPEN_MARKER_R = 17
 const STRING_COUNT = 6
 
-const DOT_FRETS = new Set([3, 5, 7, 9, 15])
+const DOT_FRETS = new Set([3, 5, 7, 9, 15, 17, 19, 21])
 const DOUBLE_DOT_FRETS = new Set([12])
 
 const nutLeftX = LEFT_PAD + OPEN_COL_WIDTH
@@ -41,8 +41,15 @@ function fretCenterX(n: number): number {
   return fretWireX(n - 1) + FRET_WIDTH / 2
 }
 
+// The theory layer numbers strings 0 (low E) .. 5 (high e), but strings are
+// drawn high e at top / low E at bottom — the common tab-reading layout —
+// so the visual row is the reverse of the data index.
+function stringRow(stringIndex: number): number {
+  return STRING_COUNT - 1 - stringIndex
+}
+
 function stringY(stringIndex: number): number {
-  return TOP_PAD + stringIndex * STRING_GAP
+  return TOP_PAD + stringRow(stringIndex) * STRING_GAP
 }
 
 function markerVariant(degreeIndex: number, isRoot: boolean, displayMode: DisplayMode): MarkerVariant {
@@ -161,7 +168,7 @@ export function Fretboard({ rootPc, mode, displayMode, position }: FretboardProp
               key={`fretnum-${fret}`}
               className="fret-number"
               x={fretCenterX(fret)}
-              y={surfaceBottom + 22}
+              y={surfaceBottom + 20}
               textAnchor="middle"
             >
               {fret}
