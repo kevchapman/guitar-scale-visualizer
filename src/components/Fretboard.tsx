@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import type { DisplayMode, Mode, PositionId } from '../theory/types'
+import type { DisplayMode, PositionId, ScaleId } from '../theory/types'
 import { computeCagedPositions, computeFretCount } from '../theory/caged'
 import { buildFretboardGrid, buildOpenStrings } from '../theory/fretboard'
 import { formatSpelling, OPEN_STRING_NAMES } from '../theory/notes'
@@ -7,7 +7,7 @@ import { NoteMarker, OpenStringMarker, type MarkerVariant } from './NoteMarker'
 
 interface FretboardProps {
   rootPc: number
-  mode: Mode
+  scaleId: ScaleId
   displayMode: DisplayMode
   position: PositionId
 }
@@ -52,21 +52,21 @@ function stringY(stringIndex: number): number {
   return TOP_PAD + stringRow(stringIndex) * STRING_GAP
 }
 
-function markerVariant(degreeIndex: number, isRoot: boolean, displayMode: DisplayMode): MarkerVariant {
-  if (isRoot) return 'root'
+function markerVariant(tone: { isRoot: boolean; triadRole: 'root' | 'third' | 'fifth' | null }, displayMode: DisplayMode): MarkerVariant {
+  if (tone.isRoot) return 'root'
   if (displayMode === 'triads' || displayMode === 'intervals') {
-    if (degreeIndex === 2) return 'triad3'
-    if (degreeIndex === 4) return 'triad5'
+    if (tone.triadRole === 'third') return 'triad3'
+    if (tone.triadRole === 'fifth') return 'triad5'
   }
   return 'neutral'
 }
 
-export function Fretboard({ rootPc, mode, displayMode, position }: FretboardProps) {
+export function Fretboard({ rootPc, scaleId, displayMode, position }: FretboardProps) {
   const positions = useMemo(() => computeCagedPositions(rootPc), [rootPc])
   const fretCount = useMemo(() => computeFretCount(positions), [positions])
   const { grid, scale } = useMemo(
-    () => buildFretboardGrid(rootPc, mode, fretCount),
-    [rootPc, mode, fretCount],
+    () => buildFretboardGrid(rootPc, scaleId, fretCount),
+    [rootPc, scaleId, fretCount],
   )
   const openStrings = useMemo(() => buildOpenStrings(scale), [scale])
 
@@ -194,7 +194,7 @@ export function Fretboard({ rootPc, mode, displayMode, position }: FretboardProp
 
         {/* Fretted note markers */}
         {visibleCells.map((cell) => {
-          const variant = markerVariant(cell.tone.degreeIndex, cell.tone.isRoot, displayMode)
+          const variant = markerVariant(cell.tone, displayMode)
           const label =
             displayMode === 'root' ? '' : displayMode === 'intervals' ? cell.tone.degreeLabel : formatSpelling(cell.tone)
           return (

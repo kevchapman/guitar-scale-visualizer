@@ -1,4 +1,4 @@
-import type { FretCell, Mode, ScaleTone } from './types'
+import type { FretCell, ScaleId, ScaleTone } from './types'
 import { mod12, OPEN_STRING_PCS } from './notes'
 import { buildScale } from './scale'
 
@@ -12,10 +12,10 @@ export const MIN_FRET_COUNT = 22
  */
 export function buildFretboardGrid(
   rootPc: number,
-  mode: Mode,
+  scaleId: ScaleId,
   fretCount: number,
 ): { grid: FretCell[]; scale: ScaleTone[] } {
-  const scale = buildScale(rootPc, mode)
+  const scale = buildScale(rootPc, scaleId)
   const byPc = new Map(scale.map((tone) => [tone.pc, tone]))
 
   const grid: FretCell[] = []

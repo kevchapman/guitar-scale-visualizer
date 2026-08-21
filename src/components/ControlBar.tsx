@@ -1,24 +1,20 @@
 import { useMemo } from 'react'
-import type { DisplayMode, Mode, PositionId } from '../theory/types'
+import type { DisplayMode, PositionId, ScaleId } from '../theory/types'
 import { computeCagedPositions } from '../theory/caged'
 import { KeySelector } from './KeySelector'
+import { ScaleSelector } from './ScaleSelector'
 import { SegmentedControl } from './SegmentedControl'
 
 interface ControlBarProps {
   rootPc: number
   onRootPcChange: (pc: number) => void
-  mode: Mode
-  onModeChange: (mode: Mode) => void
+  scaleId: ScaleId
+  onScaleIdChange: (scaleId: ScaleId) => void
   displayMode: DisplayMode
   onDisplayModeChange: (mode: DisplayMode) => void
   position: PositionId
   onPositionChange: (position: PositionId) => void
 }
-
-const MODE_OPTIONS: { id: Mode; label: string }[] = [
-  { id: 'major', label: 'Major' },
-  { id: 'minor', label: 'Minor' },
-]
 
 const DISPLAY_OPTIONS: { id: DisplayMode; label: string }[] = [
   { id: 'root', label: 'Root' },
@@ -30,8 +26,8 @@ const DISPLAY_OPTIONS: { id: DisplayMode; label: string }[] = [
 export function ControlBar({
   rootPc,
   onRootPcChange,
-  mode,
-  onModeChange,
+  scaleId,
+  onScaleIdChange,
   displayMode,
   onDisplayModeChange,
   position,
@@ -52,7 +48,7 @@ export function ControlBar({
   return (
     <header className="control-bar no-print">
       <KeySelector value={rootPc} onChange={onRootPcChange} />
-      <SegmentedControl label="Mode" options={MODE_OPTIONS} value={mode} onChange={onModeChange} />
+      <ScaleSelector value={scaleId} onChange={onScaleIdChange} />
       <SegmentedControl
         label="Display"
         options={DISPLAY_OPTIONS}
